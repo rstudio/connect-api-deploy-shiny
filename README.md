@@ -41,6 +41,9 @@ tools. Let us (<sol-eng@rstudio.com>) know about your experience!
    rsconnect::writeManifest()
    ```
 
+   > NOTE: Please use `rsconnect` version 0.8.15 or higher when generating a
+   > manifest file.
+
    We recommend committing the `manifest.json` into your source control system
    and regenerating it whenever you push new versions of your code --
    especially when updating packages or otherwise changing its dependencies!
