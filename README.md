@@ -272,7 +272,7 @@ suit your environment. Here are some considerations to keep in mind:
    # Deploy to staging
    export CONNECT_SERVER="http://connect-staging.company.com"
    export STAGING_CONTENT="491b772f-a58f-47e0-b358-3da7e288939c"
-   ./deploy/scripts/upload-and-deploy "${STAGING_CONTENT}"
+   ./deploy/upload-and-deploy.sh "${STAGING_CONTENT}"
    ```
 
    ```bash
@@ -280,7 +280,7 @@ suit your environment. Here are some considerations to keep in mind:
    # Deploy to production
    export CONNECT_SERVER="http://connect.company.com"
    export PRODUCTION_CONTENT="3dac1a27-260c-4e56-b8c0-c6f0913d9ac5"
-   ./deploy/scripts/upload-and-deploy "${PRODUCTION_CONTENT}"
+   ./deploy/upload-and-deploy.sh "${PRODUCTION_CONTENT}"
    ```
 
     In this example, staging and production are different RStudio Connect
