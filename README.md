@@ -123,7 +123,7 @@ your content. Duplicate titles are permitted.
 
 ```bash
 ./deploy/create-content.sh "Shakespeare Word Clouds"
-# => Created application: 491b772f-a58f-47e0-b358-3da7e288939c
+# => Created content: 491b772f-a58f-47e0-b358-3da7e288939c
 ```
 
 The GUID that is returned (`491b772f-a58f-47e0-b358-3da7e288939c`) identifies
@@ -153,9 +153,42 @@ Shiny application as you incorporate feedback from your colleagues. Publish
 new versions of an R Markdown document as you make edits and expand your
 research.
 
+> You will need to adapt this script for your content. The `bundle.tar.gz`
+> archive file is created by only including the files needed by the Shiny
+> application in this repository.
+
 You cannot convert a content item from one type to another -- R Markdown
 reports cannot become Shiny applications -- create a new content item to
 contain the different type of content.
+
+### Create, upload, and deploy
+
+The `create-upload-and-deploy.sh` script performs the work of both
+`create-content.sh` and `upload-and-deploy.sh` in one command. The
+command-line arguments are taken as the title of your content. Duplicate
+titles are permitted.
+
+```bash
+./deploy/create-upload-and-deploy.sh "Shakespeare Word Clouds"
+# => Creating bundle archive: bundle.tar.gz
+# => Created content: 491b772f-a58f-47e0-b358-3da7e288939c
+# => Created bundle: 468
+# => Deployment task: meQSUN9aqjKexyqN
+# => Building Shiny application...
+# => Bundle requested R version 3.5.1; using /usr/lib/R/bin/R which has version 3.4.4
+# => ...
+# => Completed packrat build against R version: '3.4.4'
+# => Launching Shiny application...
+# => Task: meQSUN9aqjKexyqN Complete.
+```
+
+Use `create-upload-and-deploy.sh` when you do not need to separate the
+creation from upload/deploy phases. Use `upload-and-deploy` script for
+additional deployments to your newly created item.
+
+> You will need to adapt this script for your content. The `bundle.tar.gz`
+> archive file is created by only including the files needed by the Shiny
+> application in this repository.
 
 ## Using Docker for deployments
 
@@ -191,7 +224,7 @@ docker run --rm \
     -w /content \
     rstudio-connect-deployer:latest \
     /content/deploy/create-content.sh "Content created with Docker"
-# => Created application: 3dac1a27-260c-4e56-b8c0-c6f0913d9ac5
+# => Created content: 3dac1a27-260c-4e56-b8c0-c6f0913d9ac5
 ```
 
 The GUID that is returned (`3dac1a27-260c-4e56-b8c0-c6f0913d9ac5`) identifies
