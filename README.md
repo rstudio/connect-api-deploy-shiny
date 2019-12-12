@@ -81,12 +81,12 @@ RStudio Connect instance and repeatedly deploy code for that content.
 The deployment scripts configure the target server and user authentication
 with environment variables.
 
-The `CONNECT_SERVER` environment variable indicates the target RStudio Connect
+The `RSCONNECT_SERVER` environment variable indicates the target RStudio Connect
 server. This environment variable must be the base URL of your instance and
 end with a trailing slash.
 
 ```bash
-export CONNECT_SERVER='http://connect.company.com/'
+export RSCONNECT_SERVER='http://connect.company.com/'
 ```
 
 Some configurations have RStudio Connect behind a proxy and expose Connect
@@ -94,14 +94,14 @@ under a specific sub-path; use that proxied path in the environment
 variable.
 
 ```bash
-export CONNECT_SERVER='http://proxy.company.com/connect/'
+export RSCONNECT_SERVER='http://proxy.company.com/connect/'
 ```
 
-The `CONNECT_API_KEY` environment variable indicates an API key owned by the
-target "publisher" account in the `CONNECT_SERVER` RStudio Connect server.
+The `RSCONNECT_API_KEY` environment variable indicates an API key owned by the
+target "publisher" account in the `RSCONNECT_SERVER` RStudio Connect server.
 
 ```bash
-export CONNECT_API_KEY='jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa'
+export RSCONNECT_API_KEY='jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa'
 ```
 
 If you do not already have an API key, you can create one in the RStudio
@@ -218,8 +218,8 @@ your content. First, let's create a new content entry:
 
 ```bash
 docker run --rm \
-    -e CONNECT_SERVER="http://connect.company.com/" \
-    -e CONNECT_API_KEY="jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa" \
+    -e RSCONNECT_SERVER="http://connect.company.com/" \
+    -e RSCONNECT_API_KEY="jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa" \
     -v $(pwd):/content \
     -w /content \
     rstudio-connect-deployer:latest \
@@ -234,8 +234,8 @@ Now, let's deploy the Shiny application to that entry.
 
 ```bash
 docker run --rm \
-    -e CONNECT_SERVER="http://connect.company.com/" \
-    -e CONNECT_API_KEY="jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa" \
+    -e RSCONNECT_SERVER="http://connect.company.com/" \
+    -e RSCONNECT_API_KEY="jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa" \
     -v $(pwd):/content \
     -w /content \
     rstudio-connect-deployer:latest \
@@ -303,7 +303,7 @@ suit your environment. Here are some considerations to keep in mind:
    ```bash
    #!/usr/bin/env bash
    # Deploy to staging
-   export CONNECT_SERVER="http://connect-staging.company.com"
+   export RSCONNECT_SERVER="http://connect-staging.company.com"
    export STAGING_CONTENT="491b772f-a58f-47e0-b358-3da7e288939c"
    ./deploy/upload-and-deploy.sh "${STAGING_CONTENT}"
    ```
@@ -311,14 +311,14 @@ suit your environment. Here are some considerations to keep in mind:
    ```bash
    #!/usr/bin/env bash
    # Deploy to production
-   export CONNECT_SERVER="http://connect.company.com"
+   export RSCONNECT_SERVER="http://connect.company.com"
    export PRODUCTION_CONTENT="3dac1a27-260c-4e56-b8c0-c6f0913d9ac5"
    ./deploy/upload-and-deploy.sh "${PRODUCTION_CONTENT}"
    ```
 
     In this example, staging and production are different RStudio Connect
     instances and use distinct API keys. Your deploying environment needs to
-    configure the `CONNECT_API_KEY` environment variable with the correct API
+    configure the `RSCONNECT_API_KEY` environment variable with the correct API
     key depending on the target environment.
 
 

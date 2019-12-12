@@ -6,27 +6,27 @@
 
 set -e
 
-if [ -z "${CONNECT_SERVER}" ] ; then
-    echo "The CONNECT_SERVER environment variable is not defined. It defines"
+if [ -z "${RSCONNECT_SERVER}" ] ; then
+    echo "The RSCONNECT_SERVER environment variable is not defined. It defines"
     echo "the base URL of your RStudio Connect instance."
     echo 
-    echo "    export CONNECT_SERVER='http://connect.company.com/'"
+    echo "    export RSCONNECT_SERVER='http://connect.company.com/'"
     exit 1
 fi
 
-if [[ "${CONNECT_SERVER}" != */ ]] ; then
-    echo "The CONNECT_SERVER environment variable must end in a trailing slash. It"
+if [[ "${RSCONNECT_SERVER}" != */ ]] ; then
+    echo "The RSCONNECT_SERVER environment variable must end in a trailing slash. It"
     echo "defines the base URL of your RStudio Connect instance."
     echo 
-    echo "    export CONNECT_SERVER='http://connect.company.com/'"
+    echo "    export RSCONNECT_SERVER='http://connect.company.com/'"
     exit 1
 fi
 
-if [ -z "${CONNECT_API_KEY}" ] ; then
-    echo "The CONNECT_API_KEY environment variable is not defined. It must contain"
+if [ -z "${RSCONNECT_API_KEY}" ] ; then
+    echo "The RSCONNECT_API_KEY environment variable is not defined. It must contain"
     echo "an API key owned by a 'publisher' account in your RStudio Connect instance."
     echo
-    echo "    export CONNECT_API_KEY='jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa'"
+    echo "    export RSCONNECT_API_KEY='jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa'"
     exit 1
 fi
 
@@ -52,8 +52,8 @@ DATA=$(jq --arg title "${TITLE}" \
    '. | .["title"]=$title | .["name"]=$name' \
    <<<'{}')
 RESULT=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
-              -H "Authorization: Key ${CONNECT_API_KEY}" \
+              -H "Authorization: Key ${RSCONNECT_API_KEY}" \
               --data "${DATA}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content")
+              "${RSCONNECT_SERVER}__api__/v1/experimental/content")
 CONTENT=$(echo "$RESULT" | jq -r .guid)
 echo "Created content: ${CONTENT}"

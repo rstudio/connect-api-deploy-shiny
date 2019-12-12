@@ -14,27 +14,27 @@
 
 set -e
 
-if [ -z "${CONNECT_SERVER}" ] ; then
-    echo "The CONNECT_SERVER environment variable is not defined. It defines"
+if [ -z "${RSCONNECT_SERVER}" ] ; then
+    echo "The RSCONNECT_SERVER environment variable is not defined. It defines"
     echo "the base URL of your RStudio Connect instance."
     echo 
-    echo "    export CONNECT_SERVER='http://connect.company.com/'"
+    echo "    export RSCONNECT_SERVER='http://connect.company.com/'"
     exit 1
 fi
 
-if [[ "${CONNECT_SERVER}" != */ ]] ; then
-    echo "The CONNECT_SERVER environment variable must end in a trailing slash. It"
+if [[ "${RSCONNECT_SERVER}" != */ ]] ; then
+    echo "The RSCONNECT_SERVER environment variable must end in a trailing slash. It"
     echo "defines the base URL of your RStudio Connect instance."
     echo 
-    echo "    export CONNECT_SERVER='http://connect.company.com/'"
+    echo "    export RSCONNECT_SERVER='http://connect.company.com/'"
     exit 1
 fi
 
-if [ -z "${CONNECT_API_KEY}" ] ; then
-    echo "The CONNECT_API_KEY environment variable is not defined. It must contain"
+if [ -z "${RSCONNECT_API_KEY}" ] ; then
+    echo "The RSCONNECT_API_KEY environment variable is not defined. It must contain"
     echo "an API key owned by a 'publisher' account in your RStudio Connect instance."
     echo
-    echo "    export CONNECT_API_KEY='jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa'"
+    echo "    export RSCONNECT_API_KEY='jIsDWwtuWWsRAwu0XoYpbyok2rlXfRWa'"
     exit 1
 fi
 
@@ -72,17 +72,17 @@ DATA=$(jq --arg title "${TITLE}" \
    '. | .["title"]=$title | .["name"]=$name' \
    <<<'{}')
 RESULT=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
-              -H "Authorization: Key ${CONNECT_API_KEY}" \
+              -H "Authorization: Key ${RSCONNECT_API_KEY}" \
               --data "${DATA}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content")
+              "${RSCONNECT_SERVER}__api__/v1/experimental/content")
 CONTENT=$(echo "$RESULT" | jq -r .guid)
 echo "Created content: ${CONTENT}"
 
 # Upload the bundle
 UPLOAD=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
-              -H "Authorization: Key ${CONNECT_API_KEY}" \
+              -H "Authorization: Key ${RSCONNECT_API_KEY}" \
               --data-binary @"${BUNDLE_PATH}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content/${CONTENT}/upload")
+              "${RSCONNECT_SERVER}__api__/v1/experimental/content/${CONTENT}/upload")
 BUNDLE=$(echo "$UPLOAD" | jq -r .bundle_id)
 echo "Created bundle: $BUNDLE"
 
@@ -91,9 +91,9 @@ DATA=$(jq --arg bundle_id "${BUNDLE}" \
    '. | .["bundle_id"]=$bundle_id' \
    <<<'{}')
 DEPLOY=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
-              -H "Authorization: Key ${CONNECT_API_KEY}" \
+              -H "Authorization: Key ${RSCONNECT_API_KEY}" \
               --data "${DATA}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content/${CONTENT}/deploy")
+              "${RSCONNECT_SERVER}__api__/v1/experimental/content/${CONTENT}/deploy")
 TASK=$(echo "$DEPLOY" | jq -r .task_id)
 
 # Poll until the task completes.
@@ -103,8 +103,8 @@ FIRST=0
 echo "Deployment task: ${TASK}"
 while [ "${FINISHED}" != "true" ] ; do
     DATA=$(curl --silent --show-error -L --max-redirs 0 --fail \
-              -H "Authorization: Key ${CONNECT_API_KEY}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/tasks/${TASK}?wait=1&first=${FIRST}")
+              -H "Authorization: Key ${RSCONNECT_API_KEY}" \
+              "${RSCONNECT_SERVER}__api__/v1/experimental/tasks/${TASK}?wait=1&first=${FIRST}")
     # Extract parts of the task status.
     FINISHED=$(echo "${DATA}" | jq .finished)
     CODE=$(echo "${DATA}" | jq .code)
