@@ -74,7 +74,7 @@ DATA=$(jq --arg title "${TITLE}" \
 RESULT=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
               -H "Authorization: Key ${CONNECT_API_KEY}" \
               --data "${DATA}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content")
+              "${CONNECT_SERVER}__api__/v1/content")
 CONTENT=$(echo "$RESULT" | jq -r .guid)
 echo "Created content: ${CONTENT}"
 
@@ -82,8 +82,8 @@ echo "Created content: ${CONTENT}"
 UPLOAD=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
               -H "Authorization: Key ${CONNECT_API_KEY}" \
               --data-binary @"${BUNDLE_PATH}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content/${CONTENT}/upload")
-BUNDLE=$(echo "$UPLOAD" | jq -r .bundle_id)
+              "${CONNECT_SERVER}__api__/v1/content/${CONTENT}/bundles")
+BUNDLE=$(echo "$UPLOAD" | jq -r .id)
 echo "Created bundle: $BUNDLE"
 
 # Deploy the bundle.
@@ -93,7 +93,7 @@ DATA=$(jq --arg bundle_id "${BUNDLE}" \
 DEPLOY=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
               -H "Authorization: Key ${CONNECT_API_KEY}" \
               --data "${DATA}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content/${CONTENT}/deploy")
+              "${CONNECT_SERVER}__api__/v1/content/${CONTENT}/deploy")
 TASK=$(echo "$DEPLOY" | jq -r .task_id)
 
 # Poll until the task completes.
@@ -104,7 +104,7 @@ echo "Deployment task: ${TASK}"
 while [ "${FINISHED}" != "true" ] ; do
     DATA=$(curl --silent --show-error -L --max-redirs 0 --fail \
               -H "Authorization: Key ${CONNECT_API_KEY}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/tasks/${TASK}?wait=1&first=${FIRST}")
+              "${CONNECT_SERVER}__api__/v1/tasks/${TASK}?wait=1&first=${FIRST}")
     # Extract parts of the task status.
     FINISHED=$(echo "${DATA}" | jq .finished)
     CODE=$(echo "${DATA}" | jq .code)

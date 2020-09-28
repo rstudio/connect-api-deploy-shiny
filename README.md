@@ -41,7 +41,7 @@ tools. Let us (<sol-eng@rstudio.com>) know about your experience!
    rsconnect::writeManifest()
    ```
 
-   > NOTE: Please use `rsconnect` version 0.8.15 or higher when generating a
+   > NOTE: Please use `rsconnect` version 0.8.16 or higher when generating a
    > manifest file.
 
    We recommend committing the `manifest.json` into your source control system
@@ -163,13 +163,13 @@ contain the different type of content.
 
 ### Create, upload, and deploy
 
-The `create-upload-and-deploy.sh` script performs the work of both
+The `create-upload-deploy.sh` script performs the work of both
 `create-content.sh` and `upload-and-deploy.sh` in one command. The
 command-line arguments are taken as the title of your content. Duplicate
 titles are permitted.
 
 ```bash
-./deploy/create-upload-and-deploy.sh "Shakespeare Word Clouds"
+./deploy/create-upload-deploy.sh "Shakespeare Word Clouds"
 # => Creating bundle archive: bundle.tar.gz
 # => Created content: 491b772f-a58f-47e0-b358-3da7e288939c
 # => Created bundle: 468
@@ -182,7 +182,7 @@ titles are permitted.
 # => Task: meQSUN9aqjKexyqN Complete.
 ```
 
-Use `create-upload-and-deploy.sh` when you do not need to separate the
+Use `create-upload-deploy.sh` when you do not need to separate the
 creation from upload/deploy phases. Use `upload-and-deploy` script for
 additional deployments to your newly created item.
 
