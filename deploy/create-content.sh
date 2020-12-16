@@ -54,6 +54,6 @@ DATA=$(jq --arg title "${TITLE}" \
 RESULT=$(curl --silent --show-error -L --max-redirs 0 --fail -X POST \
               -H "Authorization: Key ${CONNECT_API_KEY}" \
               --data "${DATA}" \
-              "${CONNECT_SERVER}__api__/v1/experimental/content")
+              "${CONNECT_SERVER}__api__/v1/content")
 CONTENT=$(echo "$RESULT" | jq -r .guid)
 echo "Created content: ${CONTENT}"
