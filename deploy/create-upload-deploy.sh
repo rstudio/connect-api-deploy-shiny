@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 #
 # Create content in RStudio Connect with a given title. Does not prevent the
-# creation of duplicate titles.
-#
-
-#!/usr/bin/env bash
-#
-# Create a bundle, upload that bundle to RStudio Connect, deploy that bundle,
-# then wait for deployment to complete.
+# creation of duplicate titles. Subsequently, create a bundle, upload that
+# bundle to RStudio Connect, deploy that bundle, then wait for deployment to
+# complete.
 #
 # Run this script from the content root directory.
 #
