@@ -12,7 +12,7 @@ library(wordcloud)
 library(memoise)
 
 # The list of books and the root of the associated file name.
-books <<- list("A Mid Summer Night's Dream" = "summer",
+books <- list("A Mid Summer Night's Dream" = "summer",
               "The Merchant of Venice" = "merchant",
               "Romeo and Juliet" = "romeo")
 
@@ -24,7 +24,7 @@ getTermMatrix <- memoise(function(book) {
     stop("Unknown book")
 
   text <- readLines(sprintf("./data/%s.txt.gz", book),
-    encoding="UTF-8")
+    encoding = "UTF-8")
 
   myCorpus = Corpus(VectorSource(text))
   myCorpus = tm_map(myCorpus, content_transformer(tolower))
@@ -82,13 +82,13 @@ server <- function(input, output, session) {
   })
 
   # Make the wordcloud drawing predictable during a session
-  wordcloud_rep <- repeatable(wordcloud)
+  wordcloud_rep <- repeatable(wordcloud::wordcloud)
 
   output$plot <- renderPlot({
     v <- terms()
-    wordcloud_rep(names(v), v, scale=c(4,0.5),
-                  min.freq = input$freq, max.words=input$max,
-                  colors=brewer.pal(8, "Dark2"))
+    wordcloud_rep(names(v), v, scale = c(4,0.5),
+                  min.freq = input$freq, max.words = input$max,
+                  colors = RColorBrewer::brewer.pal(8, "Dark2"))
   })
 }
 
