@@ -43,7 +43,7 @@ getTermMatrix <- memoise(function(book) {
 
 ui <- fluidPage(
   # Application title
-  titlePanel("Word Cloud"),
+  titlePanel("Shakespearean Word Cloud"),
 
   sidebarLayout(
     # Sidebar with a slider and selection inputs
